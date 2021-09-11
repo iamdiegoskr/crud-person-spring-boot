@@ -15,8 +15,8 @@ public class PersonController {
     private InterfacePersonService servicePerson;
 
     @GetMapping(value = "listPersons")
-    public Iterable<PersonEntity> listPersons(){
-        return servicePerson.listPersons();
+    public ResponseEntity<Iterable<PersonEntity>> listPersons(){
+        return new ResponseEntity<>(servicePerson.listPersons(),HttpStatus.OK);
     }
 
     @GetMapping(value = "listPersons/{id}")
@@ -27,8 +27,8 @@ public class PersonController {
     }
 
     @PostMapping(value = "createPerson")
-    public PersonEntity createPerson(@RequestBody PersonEntity personEntity){
-        return servicePerson.save(personEntity);
+    public ResponseEntity<PersonEntity> createPerson(@RequestBody PersonEntity personEntity){
+        return new ResponseEntity<>(servicePerson.save(personEntity),HttpStatus.CREATED);
     }
 
 
