@@ -41,4 +41,12 @@ public class PersonController {
         }
     }
 
+    @PutMapping(value = "updatePerson")
+    public ResponseEntity<PersonEntity> updatePerson(@RequestBody PersonEntity personEntity){
+
+        return servicePerson.update(personEntity)
+                .map(personUpdate -> new ResponseEntity<>(personUpdate,HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
 }

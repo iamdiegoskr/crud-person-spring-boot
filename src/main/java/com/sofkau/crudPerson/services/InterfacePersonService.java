@@ -11,5 +11,5 @@ public interface InterfacePersonService {
     public Optional<PersonEntity> personById(int id);
     public PersonEntity save(PersonEntity personEntity);
     public boolean delete(int id);
-    public PersonEntity update(PersonEntity personEntity);
+    public Optional<PersonEntity> update(PersonEntity personEntity);
 }

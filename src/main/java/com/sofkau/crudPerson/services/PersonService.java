@@ -38,7 +38,14 @@ public class PersonService implements InterfacePersonService {
     }
 
     @Override
-    public PersonEntity update(PersonEntity personEntity) {
-        return null;
+    public Optional<PersonEntity> update(PersonEntity personEntity) {
+
+        Optional<PersonEntity> personEntityUpdate = personById(personEntity.getId());
+
+        return personEntityUpdate.map(personUpdate -> {
+            personUpdate.setName(personEntity.getName());
+            personUpdate.setAge(personEntity.getAge());
+            return repositoryPerson.save(personUpdate);
+        });
     }
 }
