@@ -15,7 +15,7 @@ public class PersonService implements InterfacePersonService {
 
     @Override
     public List<PersonEntity> listPersons() {
-        return null;
+        return (List<PersonEntity>) repositoryPerson.findAll();
     }
 
     @Override
