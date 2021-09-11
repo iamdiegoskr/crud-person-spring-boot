@@ -10,6 +10,6 @@ public interface InterfacePersonService {
     public List<PersonEntity> listPersons();
     public Optional<PersonEntity> personById(int id);
     public PersonEntity save(PersonEntity personEntity);
-    public void delete(int id);
+    public boolean delete(int id);
     public PersonEntity update(PersonEntity personEntity);
 }

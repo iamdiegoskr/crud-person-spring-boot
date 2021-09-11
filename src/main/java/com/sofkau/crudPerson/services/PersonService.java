@@ -30,8 +30,11 @@ public class PersonService implements InterfacePersonService {
     }
 
     @Override
-    public void delete(int id) {
-
+    public boolean delete(int id) {
+        return personById(id).map(personEntity -> {
+            repositoryPerson.deleteById(id);
+            return true;
+        }).orElse(false);
     }
 
     @Override

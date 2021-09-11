@@ -20,7 +20,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "listPersons/{id}")
-    public ResponseEntity<PersonEntity> litPerson(@PathVariable() int id){
+    public ResponseEntity<PersonEntity> litPersonById(@PathVariable() int id){
         return servicePerson.personById(id)
                 .map(personEntity -> new ResponseEntity<>(personEntity, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -32,5 +32,13 @@ public class PersonController {
     }
 
 
+    @DeleteMapping(value = "removePerson/{id}")
+    public ResponseEntity<HttpStatus> removePerson(@PathVariable() int id){
+        if (servicePerson.delete(id)){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 }
