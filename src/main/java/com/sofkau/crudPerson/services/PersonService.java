@@ -25,7 +25,7 @@ public class PersonService implements InterfacePersonService {
 
     @Override
     public PersonEntity save(PersonEntity personEntity) {
-        return null;
+        return repositoryPerson.save(personEntity);
     }
 
     @Override
