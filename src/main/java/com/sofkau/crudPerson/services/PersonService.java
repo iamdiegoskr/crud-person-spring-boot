@@ -1,6 +1,8 @@
 package com.sofkau.crudPerson.services;
 
+import com.sofkau.crudPerson.dtos.PersonDto;
 import com.sofkau.crudPerson.entities.PersonEntity;
+import com.sofkau.crudPerson.mappers.PersonMapper;
 import com.sofkau.crudPerson.repositories.InterfaceRepositoryPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,38 +16,46 @@ public class PersonService implements InterfacePersonService {
     @Autowired
     private InterfaceRepositoryPerson repositoryPerson;
 
+    @Autowired
+    private PersonMapper mapper;
+
     @Override
-    public List<PersonEntity> listPersons() {
-        return (List<PersonEntity>) repositoryPerson.findAll();
+    public List<PersonDto> listPersons() {
+        List<PersonEntity> allPersons = (List<PersonEntity>) repositoryPerson.findAll();
+        return mapper.toPersonsDto(allPersons);
     }
 
     @Override
-    public Optional<PersonEntity> personById(int id) {
-        return repositoryPerson.findById(id);
+    public Optional<PersonDto> personById(int id) {
+        return repositoryPerson.findById(id).map(personEntity -> mapper.toPersonDto(personEntity));
     }
 
     @Override
-    public PersonEntity save(PersonEntity personEntity) {
-        return repositoryPerson.save(personEntity);
+    public PersonDto save(PersonDto personDto) {
+        PersonEntity personEntity = mapper.toPersonEntity(personDto);
+        return mapper.toPersonDto(repositoryPerson.save(personEntity));
     }
 
     @Override
     public boolean delete(int id) {
-        return personById(id).map(personEntity -> {
+        return personById(id).map(personDto -> {
             repositoryPerson.deleteById(id);
             return true;
         }).orElse(false);
     }
 
     @Override
-    public Optional<PersonEntity> update(PersonEntity personEntity) {
+    public Optional<PersonDto> update(PersonDto personDto) {
 
-        Optional<PersonEntity> personEntityUpdate = personById(personEntity.getId());
+        Optional<PersonDto> personDtoUpdate = personById(personDto.getId());
 
-        return personEntityUpdate.map(personUpdate -> {
-            personUpdate.setName(personEntity.getName());
-            personUpdate.setAge(personEntity.getAge());
-            return repositoryPerson.save(personUpdate);
+        return personDtoUpdate.map(personDtoToUpdate -> {
+            personDtoToUpdate.setName(personDto.getName());
+            personDtoToUpdate.setAge(personDto.getAge());
+
+            PersonEntity personEntityToUpdate = mapper.toPersonEntity(personDtoToUpdate);
+
+            return mapper.toPersonDto(repositoryPerson.save(personEntityToUpdate));
         });
     }
 }

@@ -1,6 +1,6 @@
 package com.sofkau.crudPerson.controllers;
 
-import com.sofkau.crudPerson.entities.PersonEntity;
+import com.sofkau.crudPerson.dtos.PersonDto;
 import com.sofkau.crudPerson.services.InterfacePersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,20 +15,20 @@ public class PersonController {
     private InterfacePersonService servicePerson;
 
     @GetMapping(value = "listPersons")
-    public ResponseEntity<Iterable<PersonEntity>> listPersons(){
+    public ResponseEntity<Iterable<PersonDto>> listPersons(){
         return new ResponseEntity<>(servicePerson.listPersons(),HttpStatus.OK);
     }
 
     @GetMapping(value = "listPersons/{id}")
-    public ResponseEntity<PersonEntity> litPersonById(@PathVariable() int id){
+    public ResponseEntity<PersonDto> litPersonById(@PathVariable() int id){
         return servicePerson.personById(id)
-                .map(personEntity -> new ResponseEntity<>(personEntity, HttpStatus.OK))
+                .map(personDto -> new ResponseEntity<>(personDto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping(value = "createPerson")
-    public ResponseEntity<PersonEntity> createPerson(@RequestBody PersonEntity personEntity){
-        return new ResponseEntity<>(servicePerson.save(personEntity),HttpStatus.CREATED);
+    public ResponseEntity<PersonDto> createPerson(@RequestBody PersonDto personDto){
+        return new ResponseEntity<>(servicePerson.save(personDto),HttpStatus.CREATED);
     }
 
 
@@ -42,10 +42,10 @@ public class PersonController {
     }
 
     @PutMapping(value = "updatePerson")
-    public ResponseEntity<PersonEntity> updatePerson(@RequestBody PersonEntity personEntity){
+    public ResponseEntity<PersonDto> updatePerson(@RequestBody PersonDto personDto){
 
-        return servicePerson.update(personEntity)
-                .map(personUpdate -> new ResponseEntity<>(personUpdate,HttpStatus.OK))
+        return servicePerson.update(personDto)
+                .map(personDtoUpdate -> new ResponseEntity<>(personDtoUpdate,HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
